@@ -1,8 +1,13 @@
-import React from "react";
-import { faPaperPlane, faEllipsisH, faShieldAlt, faLock, faCheck, faTimes, faLongArrowAltUp, faLongArrowAltDown}from '@fortawesome/free-solid-svg-icons'
+import React, { useState } from "react";
+import { faPaperPlane, faEllipsisH, faShieldAlt, faLock, faCheck, faTimes, faLongArrowAltUp, faLongArrowAltDown,faDollarSign}from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
 const OtherAnalytics = () => {
+
+    const [ishidedropdown, setIsHideDropdown ] = useState(false);
+    const[selectedcurrency, setSelectedCurrency] = useState("$");
+    const [symbolsArr] = useState(["e", "E", "+", "-", "."]);
+    const symbols = ["$","₹","€"];
     return (
     <>
     <div className="other-analytics">
@@ -24,7 +29,18 @@ const OtherAnalytics = () => {
             </div>
         </div>
         <div className="right">
-            <div className="dollor-1 analytic-icon">$</div>
+            <div className="hover-div" onMouseOver={() => setIsHideDropdown(true)} onMouseLeave= {() => setIsHideDropdown(false)}>
+            <div className="dollor-1 analytic-icon">{selectedcurrency}</div>
+            {ishidedropdown && <div className="dropdown-content"> 
+                <ul>
+                {symbols.map((value) => {
+                    return <li onClick={() => {
+                        setIsHideDropdown(false)
+                        setSelectedCurrency(value)}}>{value}</li>;
+                })}
+                </ul>
+            </div>}
+            </div>
             <div className="dollor-2 analytic-icon">S/.</div>
         </div>
         
@@ -36,7 +52,10 @@ const OtherAnalytics = () => {
      <p>Name</p>
      </div>
      <p className="amount-price">Amount</p>
-     <input type="number" placeholder="$"/>
+     <div className="currency-wrap">
+    <span className="currency-code"><FontAwesomeIcon icon={faDollarSign}></FontAwesomeIcon></span>
+     <input type="number" className="number-currency" onKeyDown={e => symbolsArr.includes(e.key) && e.preventDefault()} />
+     </div>
      <button><FontAwesomeIcon icon={faPaperPlane} ></FontAwesomeIcon> Send</button>
     </div>
 
