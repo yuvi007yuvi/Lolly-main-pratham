@@ -62,7 +62,7 @@ const NavBar = () => {
 
   useEffect(() => {
     if (accountAddress === "") {
-    !isAuth ? setWalletStatus("CONNECT WALLET") : isMetaMaskInstalled() ? setWalletStatus("CONNECT WALLET") : setWalletStatus("Install Metamask") 
+    isMetaMaskInstalled() ? setWalletStatus("CONNECT WALLET") : setWalletStatus("Install Metamask") 
   } else {
     setWalletStatus("CONNECTED")
   }
@@ -126,9 +126,9 @@ const NavBar = () => {
           <div style={{display:"flex",alignItems:"center",cursor:"pointer",border:"1px solid white",borderRadius: "5px",padding:"2px 2px"}}>
             <ConnectWallet className={classes.walletBtn}/>
             <p className={classes.walletText} onClick={()=> {
-              if (isAuth) {
+              // if (isAuth) {
               walletStatus === "Install Metamask" ? installMetaMask() : walletConnect()
-              }
+              // }
             }}>{walletStatus}</p>
           </div>
         </Tooltip>
