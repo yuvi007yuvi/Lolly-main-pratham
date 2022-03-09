@@ -2,6 +2,7 @@ import React,{useState, useEffect} from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { makeStyles, useTheme } from "@material-ui/core/styles";
 import { Toolbar, IconButton, Hidden, Tooltip } from "@material-ui/core";
+import {setAuth, setChannelInfo} from "../../../redux/actions/channel"
 import {
   Search as SearchIcon,
   MoreVert as MoreIcon,
@@ -61,12 +62,12 @@ const NavBar = () => {
   };
 
   useEffect(() => {
-    if (accountAddress === "") {
-    isMetaMaskInstalled() ? setWalletStatus("CONNECT WALLET") : setWalletStatus("Install Metamask") 
+    if (accountAddress === "" && !isAuth) {
+      isMetaMaskInstalled() ? setWalletStatus("CONNECT WALLET") : setWalletStatus("Install Metamask") 
   } else {
     setWalletStatus("CONNECTED")
   }
-  },[accountAddress])
+  },[isAuth])
 
   const installMetaMask = () => {
     onboarding.startOnboarding();
@@ -87,7 +88,12 @@ const NavBar = () => {
     ) {
       getAccount().then((response) => {
         setAccountAddress(response);
-      });
+        if (response) {
+          dispatch(setAuth(true))
+          dispatch(setChannelInfo({
+            id: response,
+          }))
+        }});
     } else {
       console.log("error");
     }
@@ -132,7 +138,7 @@ const NavBar = () => {
             }}>{walletStatus}</p>
           </div>
         </Tooltip>
-        {isAuth && <NavUserMenuBtn />}
+        {!isAuth && <NavUserMenuBtn />}
       </>
     </Toolbar>
   );

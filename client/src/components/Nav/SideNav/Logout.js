@@ -6,6 +6,7 @@ import { Whatshot as TrendingIcon } from "@material-ui/icons";
 import { faSignOutAlt} from '@fortawesome/free-solid-svg-icons'
 import NavItem from "../NavItem";
 import { toggleDrawer } from "../../../redux/actions/layout";
+import {setAuth} from "../../../redux/actions/channel"
 
 function Logout() {
     const theme = useTheme();
@@ -15,6 +16,7 @@ function Logout() {
     const handleItemClick = () => {
       if (!isMinScreenMd) {
         dispatch(toggleDrawer(isMinScreenMd));
+        dispatch(setAuth(false))
       }
     };
   

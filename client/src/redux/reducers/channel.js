@@ -9,6 +9,7 @@ const initialState = {
 const channelReducer = (state = initialState, action) => {
   switch (action.type) {
     case "SET_CHANNEL_INFO":
+      return {...state, ...action.payload};
     case "SET_AUTH":
       return { ...state, ...action.payload };
     default:
