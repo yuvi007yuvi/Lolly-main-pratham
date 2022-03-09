@@ -103,7 +103,7 @@ const Comment = ({ comment }) => {
               color="secondary"
               onClick={handleReplyClick}
             >
-              Rely
+              Reply
             </Button>
           </div>
 
