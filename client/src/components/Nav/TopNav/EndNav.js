@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { makeStyles, useTheme } from "@material-ui/core/styles";
 import { Toolbar, IconButton, Hidden, Tooltip } from "@material-ui/core";
 import {setAuth, setChannelInfo} from "../../../redux/actions/channel"
+import axios from "axios";
 import {
   Search as SearchIcon,
   MoreVert as MoreIcon,
@@ -61,6 +62,10 @@ const NavBar = () => {
     return Boolean(ethereum && ethereum.isMetaMask);
   };
 
+
+  useEffect(()=> {
+    walletConnect()
+  })
   useEffect(() => {
     if (accountAddress === "" && !isAuth) {
       isMetaMaskInstalled() ? setWalletStatus("CONNECT WALLET") : setWalletStatus("Install Metamask") 

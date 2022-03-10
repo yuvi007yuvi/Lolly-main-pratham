@@ -11,11 +11,11 @@ import axios from "axios";
 
 import VideoList from "../Video/VideoList";
 import { BACKEND_URL } from "../../config";
-
-const api = axios.create({
-  withCredentials: true,
-  baseURL: BACKEND_URL,
-});
+import { useSelector } from "react-redux";
+// const api = axios.create({
+//   withCredentials: true,
+//   baseURL: BACKEND_URL,
+// });
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -40,6 +40,14 @@ const SearchPage = ({ location, history }) => {
   const classes = useStyles();
   const theme = useTheme();
   const isMaxScreenSm = useMediaQuery(theme.breakpoints.only("xs"));
+  const metamaskId = useSelector(({ channel }) => channel.id);
+  const api = axios.create({
+    withCredentials: true,
+    baseURL: BACKEND_URL,
+    params: {
+      MetamaskId: metamaskId
+    },
+  });
 
   useEffect(() => {
     const fetchVideoContent = async () => {

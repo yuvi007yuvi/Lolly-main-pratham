@@ -10,10 +10,13 @@ import axios from "axios";
 
 import { BACKEND_URL } from "../config";
 
-const api = axios.create({
-  withCredentials: true,
-  baseURL: BACKEND_URL,
-});
+// const api = axios.create({
+//   withCredentials: true,
+//   baseURL: BACKEND_URL,
+//   params: {
+//     MetamaskId: 12345
+//   },
+// });
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -37,12 +40,23 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const LikeDislikes = ({ size, showDislikes = true, type, id, videoId }) => {
+
   const options = [-1, 1]; //Dislike, Like
   const [rating, setRating] = useState(null);
   const [dislikes, setDislikes] = useState(0);
   const [likes, setLikes] = useState(0);
   const isAuth = useSelector(({ channel }) => channel.isAuth);
   const classes = useStyles();
+
+  
+  const metamaskId = useSelector(({ channel }) => channel.id);
+  const api = axios.create({
+    withCredentials: true,
+    baseURL: BACKEND_URL,
+    params: {
+      MetamaskId: metamaskId
+    },
+  });
   useEffect(() => {
     const fetchRating = async () => {
       const url1 = `/api/ratings/${type}/${videoId}/${id}`;

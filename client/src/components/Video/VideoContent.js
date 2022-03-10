@@ -15,11 +15,12 @@ import { grey } from "@material-ui/core/colors";
 import SubscribeBtn from "../SubscribeBtn";
 import LikeDislikes from "../LikeDislikes";
 import { BACKEND_URL } from "../../config";
+import { useSelector } from "react-redux";
 
-const api = axios.create({
-  withCredentials: true,
-  baseURL: BACKEND_URL,
-});
+// const api = axios.create({
+//   withCredentials: true,
+//   baseURL: BACKEND_URL,
+// });
 
 const useStyles = makeStyles((theme) => ({
   text: {
@@ -68,7 +69,14 @@ export default function VideoContent({ videoId }) {
   const [video, setVideo] = useState({});
   const [numberOfSubscribers, setSubscribers] = useState(0);
   const [showMore, setShowMore] = useState(false);
-
+  const metamaskId = useSelector(({ channel }) => channel.id);
+  const api = axios.create({
+    withCredentials: true,
+    baseURL: BACKEND_URL,
+    params: {
+      MetamaskId: metamaskId
+    },
+  });
   useEffect(() => {
     const fetchVideoContent = async () => {
       try {

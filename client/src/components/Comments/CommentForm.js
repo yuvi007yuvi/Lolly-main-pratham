@@ -13,10 +13,10 @@ import axios from "axios";
 import { BACKEND_URL } from "../../config";
 import { addComment } from "../../redux/actions/comments";
 
-const api = axios.create({
-  withCredentials: true,
-  baseURL: BACKEND_URL,
-});
+// const api = axios.create({
+//   withCredentials: true,
+//   baseURL: BACKEND_URL,
+// });
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -44,6 +44,14 @@ const CommentForm = ({ videoId, commentTo, handleReplyComment }) => {
   const classes = useStyles();
 
   const handleChange = (e) => setComment(e.target.value);
+  const metamaskId = useSelector(({ channel }) => channel.id);
+  const api = axios.create({
+    withCredentials: true,
+    baseURL: BACKEND_URL,
+    params: {
+      MetamaskId: metamaskId
+    },
+  });
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (isAuth) {

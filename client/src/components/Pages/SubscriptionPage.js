@@ -6,11 +6,12 @@ import VideoGrid from "../Video/VideoGrid";
 import { BACKEND_URL } from "../../config";
 import AnalyticViewer from "../Analytics/AnalyticViewer";
 import OtherAnalytics from "../Analytics/OtherAnalytics";
+import { useSelector } from "react-redux";
 
-const api = axios.create({
-  withCredentials: true,
-  baseURL: BACKEND_URL,
-});
+// const api = axios.create({
+//   withCredentials: true,
+//   baseURL: BACKEND_URL,
+// });
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -51,7 +52,14 @@ const HomePage = () => {
     };
     fetchVideoContent();
   }, []);
-
+  const metamaskId = useSelector(({ channel }) => channel.id);
+  const api = axios.create({
+    withCredentials: true,
+    baseURL: BACKEND_URL,
+    params: {
+      MetamaskId: metamaskId
+    },
+  });
   return (
     <Container maxWidth="xl" className={classes.root}>
 

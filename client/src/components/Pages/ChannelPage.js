@@ -2,16 +2,16 @@ import React, { useEffect, useState } from "react";
 import NumAbbr from "number-abbreviate";
 import { Typography, Avatar, makeStyles } from "@material-ui/core";
 import axios from "axios";
-
+import { useSelector } from "react-redux";
 import { AntTab, AntTabs } from "../AntTabs";
 import SubscribeBtn from "../SubscribeBtn";
 import VideoGrid from "../Video/VideoGrid";
 import { BACKEND_URL } from "../../config";
 
-const api = axios.create({
-  withCredentials: true,
-  baseURL: BACKEND_URL,
-});
+// const api = axios.create({
+//   withCredentials: true,
+//   baseURL: BACKEND_URL,
+// });
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -60,6 +60,14 @@ const ChannelPage = ({ match }) => {
   const [numberOfSubscribers, setSubscribers] = useState(0);
   const [tabValue, setTabValue] = React.useState(1);
   const classes = useStyles();
+  const metamaskId = useSelector(({ channel }) => channel.id);
+  const api = axios.create({
+    withCredentials: true,
+    baseURL: BACKEND_URL,
+    params: {
+      MetamaskId: metamaskId
+    },
+  });
 
   const handleTabChange = (event, newValue) => {
     setTabValue(newValue);

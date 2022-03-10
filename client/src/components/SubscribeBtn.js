@@ -8,10 +8,10 @@ import { BACKEND_URL } from "../config";
 
 import clsx from "clsx";
 
-const api = axios.create({
-  withCredentials: true,
-  baseURL: BACKEND_URL,
-});
+// const api = axios.create({
+//   withCredentials: true,
+//   baseURL: BACKEND_URL,
+// });
 
 const useStyles = makeStyles((theme) => ({
   subscribeBtn: {
@@ -24,6 +24,14 @@ export default function SubscribeBtn({ className, channelId, size }) {
   const classes = useStyles();
   const userId = useSelector(({ channel }) => channel.id);
   const [isSubscribed, setSubscribed] = useState(false);
+  const metamaskId = useSelector(({ channel }) => channel.id);
+  const api = axios.create({
+    withCredentials: true,
+    baseURL: BACKEND_URL,
+    params: {
+      MetamaskId: metamaskId
+    },
+  });
   const handleClick = async () => {
     const data = {
       channel: channelId,
