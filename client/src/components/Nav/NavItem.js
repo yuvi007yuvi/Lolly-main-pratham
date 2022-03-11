@@ -64,6 +64,7 @@ const NavItem = ({ to, title,icon, onClick, disableActive, type }) => {
       : location.pathname === to;
   // const Icon = icon;
   // console.log(icon)
+  
   const Item =
     type === "secondary" ? (
       <CircleItem title={title}>
@@ -91,7 +92,7 @@ const NavItem = ({ to, title,icon, onClick, disableActive, type }) => {
       </ListItem>
     );
   return to ? (
-    <NavLink to={to} className={isActive ? `${classes.active} ${classes.text}` : classes.text}>
+     <NavLink to={to} className={isActive ? `${classes.active} ${classes.text}` : classes.text}>
       {Item}
     </NavLink>
   ) : (

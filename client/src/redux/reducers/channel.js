@@ -4,6 +4,7 @@ const initialState = {
   name: null,
   email: null,
   image: null,
+  isLogin: false
 };
 
 const channelReducer = (state = initialState, action) => {
@@ -12,6 +13,8 @@ const channelReducer = (state = initialState, action) => {
       return {...state, ...action.payload};
     case "SET_AUTH":
       return { ...state, ...action.payload };
+      case "SET_LOGIN":
+        return { ...state, ...action.payload };
     default:
       return state;
   }

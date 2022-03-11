@@ -12,6 +12,12 @@ export const setAuth = (isAuth) => {
     payload: { isAuth },
   };
 };
+export const setIsLogin = (isLogin) => {
+  return {
+    type: "SET_LOGIN",
+    payload: { isLogin },
+  };
+};
 
 const setChannelInfo = (channel) => {
   return {

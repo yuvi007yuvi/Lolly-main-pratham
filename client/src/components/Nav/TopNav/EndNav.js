@@ -2,7 +2,7 @@ import React,{useState, useEffect} from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { makeStyles, useTheme } from "@material-ui/core/styles";
 import { Toolbar, IconButton, Hidden, Tooltip } from "@material-ui/core";
-import {setAuth, setChannelInfo} from "../../../redux/actions/channel"
+import {setAuth, setChannelInfo,setIsLogin} from "../../../redux/actions/channel"
 import axios from "axios";
 import {
   Search as SearchIcon,
@@ -89,7 +89,7 @@ const NavBar = () => {
   },[isAuth])
 
   const setConnected = () => {
-   setWalletStatus("LOGIN")
+   setWalletStatus("CONNECTED")
   }
 
   async function connectWallet() {
@@ -99,6 +99,7 @@ const NavBar = () => {
       window.web3 = new Web3(window.ethereum);
       let accounts = await window.web3.eth.getAccounts();
       let account = accounts[0];
+      dispatch(setIsLogin(true))
       setAccountAddress(account)
       walletStatus ==="CONNECT WALLET" && setConnected()
     }
@@ -109,9 +110,9 @@ const NavBar = () => {
   }
   async function signMessage() {
     signature = await window.web3.eth.personal.sign(message, accountAddress);
-    dispatch(setAuth(true))
+    // dispatch(setAuth(true))
       dispatch(setChannelInfo({
-        id: accountAddress,
+        id: accountAddress, 
       }))
     console.log("Signature: " + signature);
   }
@@ -180,7 +181,7 @@ const NavBar = () => {
             <ConnectWallet className={classes.walletBtn}/>
             <p className={classes.walletText} onClick={()=> {
               walletStatus === "Install Metamask" && installMetaMask()
-              walletStatus === "LOGIN" && signMessage()
+              walletStatus === "CONNECTED" && !isAuth && signMessage()
               walletStatus === "CONNECT WALLET" && connectWallet()
 
             }}>{walletStatus}</p>

@@ -8,12 +8,14 @@ import { faSignOutAlt} from '@fortawesome/free-solid-svg-icons'
 import NavItem from "../NavItem";
 import { toggleDrawer } from "../../../redux/actions/layout";
 import {setAuth, setChannelInfo} from "../../../redux/actions/channel"
+import { useSelector } from "react-redux";
 
 function Logout() {
     const theme = useTheme();
   
     const isMinScreenMd = useMediaQuery(theme.breakpoints.up("md"));
     const dispatch = useDispatch();
+    const isAuth = useSelector(({ channel }) => channel.isAuth);
     const handleItemClick = () => {
       if (!isMinScreenMd) {
         dispatch(toggleDrawer(isMinScreenMd));
@@ -35,12 +37,12 @@ function Logout() {
         ].map((item, index) => {
           return (
             <React.Fragment key={index}>
-              <NavItem
+       { isAuth && <NavItem
                 to={item.path}
                 title={item.title}
                 icon={item.icon}
                 onClick={handleItemClick}
-              />
+              />}
             </React.Fragment>
           );
         })}
