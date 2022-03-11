@@ -14,6 +14,7 @@ import {ReactComponent as ConnectWallet} from '../../../assets/connect-wallet.sv
 import { setMobileSearch } from "../../../redux/actions/layout";
 import NavUserMenuBtn from "./NavUserMenuBtn";
 import NavVidMenuBtn from "./NavVidMenuBtn";
+import SignInBtn from "../../SignInBtn";
 import MetaMaskOnboarding from "@metamask/onboarding"
 import { svg } from "caniuse-lite/data/features";
 import Web3 from "web3"
@@ -175,6 +176,12 @@ const NavBar = () => {
           </Tooltip>
         )}
         </Hidden>
+
+        {isAuth && <NavUserMenuBtn />}
+        {isAuth || (
+          <SignInBtn size={theme.breakpoints.up("md") ? "medium" : "large"} />
+        )}
+
         <Tooltip title={`${walletStatus}`} >
           <div style={{display:"flex",alignItems:"center",cursor:"pointer",border:"1px solid white",borderRadius: "5px",padding:"2px 2px"}}>
             <ConnectWallet className={classes.walletBtn}/>
