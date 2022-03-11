@@ -16,6 +16,7 @@ import NavUserMenuBtn from "./NavUserMenuBtn";
 import NavVidMenuBtn from "./NavVidMenuBtn";
 import MetaMaskOnboarding from "@metamask/onboarding"
 import { svg } from "caniuse-lite/data/features";
+import Web3 from "web3"
 const useStyles = makeStyles((theme) => ({
   toolbar: {
     paddingLeft: "0px",
@@ -55,54 +56,84 @@ const NavBar = () => {
   const theme = useTheme();
 
   const [walletStatus,setWalletStatus] = useState("CONNECT WALLET")
-  const [accountAddress, setAccountAddress] = useState("");
+  const [accountAddress, setAccountAddress] = useState(null);
+  let signature = null
+  let message = "Signature message in wallet";
   const onboarding = new MetaMaskOnboarding();
-  const isMetaMaskInstalled = () => {
-    const { ethereum } = window;
-    return Boolean(ethereum && ethereum.isMetaMask);
-  };
+
+  // const isMetaMaskInstalled = () => {
+  //   const { ethereum } = window;
+  //   return Boolean(ethereum && ethereum.isMetaMask);
+  // };
 
 
   useEffect(()=> {
-    walletConnect()
-  })
-  useEffect(() => {
-    if (accountAddress === "" && !isAuth) {
-      isMetaMaskInstalled() ? setWalletStatus("CONNECT WALLET") : setWalletStatus("Install Metamask") 
-  } else {
-    setWalletStatus("CONNECTED")
-  }
+    connectWallet()
+    if (accountAddress === null) {
+      setWalletStatus("CONNECT WALLET")
+    } 
+    // walletConnect()
   },[isAuth])
+  // useEffect(() => {
+  //   if (accountAddress === "" && !isAuth) {
+  //     isMetaMaskInstalled() ? setWalletStatus("CONNECT WALLET") : setWalletStatus("Install Metamask") 
+  // } else {
+  //   setWalletStatus("CONNECTED")
+  // }
+  // },[isAuth])
+
+  const setConnected = () => {
+    isAuth && setWalletStatus("CONNECTED")
+  }
+
+  async function connectWallet() {
+    if (window.ethereum) {
+      await window.ethereum.send("eth_requestAccounts");
+      window.web3 = new Web3(window.ethereum);
+      let accounts = await window.web3.eth.getAccounts();
+      let account = accounts[0];
+      setAccountAddress(account)
+      dispatch(setAuth(true))
+      dispatch(setChannelInfo({
+        id: account,
+      }))
+      setConnected()
+    }
+  }
+  async function signMessage() {
+    signature = await window.web3.eth.personal.sign(message, accountAddress);
+    console.log("Signature: " + signature);
+  }
 
   const installMetaMask = () => {
     onboarding.startOnboarding();
   }
 
-  async function getAccount() {
-    const accounts = await window.ethereum.request({
-      method: "eth_requestAccounts",
-    });
-    const account = accounts[0];
-    return account;
-  }
+  // async function getAccount() {
+  //   const accounts = await window.ethereum.request({
+  //     method: "eth_requestAccounts",
+  //   });
+  //   const account = accounts[0];
+  //   return account;
+  // }
 
-  const walletConnect = () => {
-    if (
-      typeof window !== "undefined" &&
-      typeof window.ethereum !== "undefined"
-    ) {
-      getAccount().then((response) => {
-        setAccountAddress(response);
-        if (response) {
-          dispatch(setAuth(true))
-          dispatch(setChannelInfo({
-            id: response,
-          }))
-        }});
-    } else {
-      console.log("error");
-    }
-  };
+  // const walletConnect = () => {
+  //   if (
+  //     typeof window !== "undefined" &&
+  //     typeof window.ethereum !== "undefined"
+  //   ) {
+  //     getAccount().then((response) => {
+  //       setAccountAddress(response);
+  //       if (response) {
+  //         dispatch(setAuth(true))
+  //         dispatch(setChannelInfo({
+  //           id: response,
+  //         }))
+  //       }});
+  //   } else {
+  //     console.log("error");
+  //   }
+  // };
   
   return (
     <Toolbar
@@ -137,9 +168,11 @@ const NavBar = () => {
           <div style={{display:"flex",alignItems:"center",cursor:"pointer",border:"1px solid white",borderRadius: "5px",padding:"2px 2px"}}>
             <ConnectWallet className={classes.walletBtn}/>
             <p className={classes.walletText} onClick={()=> {
-              // if (isAuth) {
-              walletStatus === "Install Metamask" ? installMetaMask() : walletConnect()
-              // }
+              if (isAuth) {
+              walletStatus === "Install Metamask" ? installMetaMask() : signMessage()
+              }else {
+                connectWallet()
+              }
             }}>{walletStatus}</p>
           </div>
         </Tooltip>
