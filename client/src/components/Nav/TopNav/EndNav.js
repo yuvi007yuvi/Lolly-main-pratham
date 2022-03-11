@@ -67,41 +67,52 @@ const NavBar = () => {
   // };
 
 
-  useEffect(()=> {
-    connectWallet()
-    if (accountAddress === null) {
-      setWalletStatus("CONNECT WALLET")
-    } 
-    // walletConnect()
-  },[isAuth])
-  // useEffect(() => {
-  //   if (accountAddress === "" && !isAuth) {
-  //     isMetaMaskInstalled() ? setWalletStatus("CONNECT WALLET") : setWalletStatus("Install Metamask") 
-  // } else {
-  //   setWalletStatus("CONNECTED")
-  // }
+  // useEffect(()=> {
+  //   debugger
+  //   connectWallet()
+  //   if (accountAddress === null) {
+  //     setWalletStatus("CONNECT WALLET")
+  //   } 
+  //   if (isAuth) {
+  //     setWalletStatus("CONNECTED")
+  //   }
+  //   // walletConnect()
   // },[isAuth])
 
+  useEffect(() => {
+      connectWallet()
+    if (accountAddress === null) {
+        setWalletStatus("CONNECT WALLET")
+  } else {
+    setWalletStatus("CONNECTED")
+  }
+  },[isAuth])
+
   const setConnected = () => {
-    isAuth && setWalletStatus("CONNECTED")
+   setWalletStatus("LOGIN")
   }
 
   async function connectWallet() {
+    try {
     if (window.ethereum) {
       await window.ethereum.send("eth_requestAccounts");
       window.web3 = new Web3(window.ethereum);
       let accounts = await window.web3.eth.getAccounts();
       let account = accounts[0];
       setAccountAddress(account)
-      dispatch(setAuth(true))
-      dispatch(setChannelInfo({
-        id: account,
-      }))
-      setConnected()
+      walletStatus ==="CONNECT WALLET" && setConnected()
     }
+  }
+  catch (err) {
+    setWalletStatus("CONNECT WALLET")
+  }
   }
   async function signMessage() {
     signature = await window.web3.eth.personal.sign(message, accountAddress);
+    dispatch(setAuth(true))
+      dispatch(setChannelInfo({
+        id: accountAddress,
+      }))
     console.log("Signature: " + signature);
   }
 
@@ -168,11 +179,10 @@ const NavBar = () => {
           <div style={{display:"flex",alignItems:"center",cursor:"pointer",border:"1px solid white",borderRadius: "5px",padding:"2px 2px"}}>
             <ConnectWallet className={classes.walletBtn}/>
             <p className={classes.walletText} onClick={()=> {
-              if (isAuth) {
-              walletStatus === "Install Metamask" ? installMetaMask() : signMessage()
-              }else {
-                connectWallet()
-              }
+              walletStatus === "Install Metamask" && installMetaMask()
+              walletStatus === "LOGIN" && signMessage()
+              walletStatus === "CONNECT WALLET" && connectWallet()
+
             }}>{walletStatus}</p>
           </div>
         </Tooltip>
