@@ -180,11 +180,11 @@ const NavBar = () => {
 
         {isAuth && <NavUserMenuBtn />}
         {isAuth || (
-          <SignInBtn size={theme.breakpoints.up("md") ? "medium" : "large"} />
+          <SignInBtn  size={theme.breakpoints.up("md") ? "medium" : "large"} />
         )}
 
         <Tooltip title={`${walletStatus}`} >
-          <div style={{display:"flex",alignItems:"center",cursor:"pointer",border:"1px solid white",borderRadius: "5px",padding:"2px 2px"}}>
+          <div style={{display:"flex",marginLeft: "1rem",alignItems:"center",cursor:"pointer",border:"1px solid white",borderRadius: "5px",padding:"2px 2px"}}>
             <ConnectWallet className={classes.walletBtn}/>
             <p className={classes.walletText} onClick={()=> {
               walletStatus === "Install Metamask" && installMetaMask()
