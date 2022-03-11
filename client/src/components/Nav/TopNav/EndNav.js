@@ -53,6 +53,8 @@ const useStyles = makeStyles((theme) => ({
 const NavBar = () => {
   const dispatch = useDispatch();
   const isAuth = useSelector(({ channel }) => channel.isAuth);
+  const id = useSelector(({ channel }) => channel.id);
+  const isLogin = useSelector(({ channel }) => channel.id);
   const classes = useStyles();
   const theme = useTheme();
 
@@ -81,9 +83,9 @@ const NavBar = () => {
   // },[isAuth])
 
   useEffect(() => {
-      connectWallet()
-    if (accountAddress === null) {
-        setWalletStatus("CONNECT WALLET")
+     id === null && connectWallet()
+    if (id === null) {
+      setWalletStatus("CONNECT WALLET")
   } else {
     setWalletStatus("CONNECTED")
   }
@@ -112,9 +114,9 @@ const NavBar = () => {
   async function signMessage() {
     signature = await window.web3.eth.personal.sign(message, accountAddress);
     // dispatch(setAuth(true))
-      dispatch(setChannelInfo({
-        id: accountAddress, 
-      }))
+      // dispatch(setChannelInfo({
+      //   id: accountAddress, 
+      // }))
     console.log("Signature: " + signature);
   }
 
@@ -179,7 +181,7 @@ const NavBar = () => {
         </Hidden>
 
         {isAuth && <NavUserMenuBtn />}
-        {isAuth || (
+        {isAuth || isLogin && (
           <SignInBtn  size={theme.breakpoints.up("md") ? "medium" : "large"} />
         )}
 
