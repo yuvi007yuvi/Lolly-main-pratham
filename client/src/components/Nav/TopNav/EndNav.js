@@ -54,7 +54,7 @@ const NavBar = () => {
   const dispatch = useDispatch();
   const isAuth = useSelector(({ channel }) => channel.isAuth);
   const id = useSelector(({ channel }) => channel.id);
-  const isLogin = useSelector(({ channel }) => channel.id);
+  const isLogin = useSelector(({ channel }) => channel.isLogin);
   const classes = useStyles();
   const theme = useTheme();
 
@@ -189,11 +189,11 @@ const NavBar = () => {
           <div style={{display:"flex",marginLeft: "1rem",alignItems:"center",cursor:"pointer",border:"1px solid white",borderRadius: "5px",padding:"2px 2px"}}>
             <ConnectWallet className={classes.walletBtn}/>
             <p className={classes.walletText} onClick={()=> {
-              walletStatus === "Install Metamask" && installMetaMask()
+              !window.ethereum && installMetaMask()
               walletStatus === "CONNECTED" && !isAuth && signMessage()
               walletStatus === "CONNECT WALLET" && connectWallet()
 
-            }}>{walletStatus}</p>
+            }}>{!window.ethereum ? 'Install Metamask': walletStatus}</p>
           </div>
         </Tooltip>
         {!isAuth && <NavUserMenuBtn />}

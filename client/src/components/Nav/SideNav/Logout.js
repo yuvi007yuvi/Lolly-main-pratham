@@ -15,9 +15,10 @@ function Logout() {
     const theme = useTheme();
     const isMinScreenMd = useMediaQuery(theme.breakpoints.up("md"));
     const dispatch = useDispatch();
-    logoutChannel()(dispatch)
     const isAuth = useSelector(({ channel }) => channel.isAuth);
     const handleItemClick = () => {
+      
+    logoutChannel()(dispatch)
       if (!isMinScreenMd) {
         dispatch(toggleDrawer(isMinScreenMd));
       }
