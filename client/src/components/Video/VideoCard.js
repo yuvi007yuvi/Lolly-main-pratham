@@ -8,6 +8,8 @@ import Skeleton from "@material-ui/lab/Skeleton";
 import { grey } from "@material-ui/core/colors";
 import NumAbbr from "number-abbreviate";
 import Thumbnail from "./Thumbnail";
+
+import DeleteIcon from '@mui/icons-material/Delete';
 const useStyles = makeStyles((theme) => ({
   root_h: {
     display: "flex",
@@ -195,9 +197,12 @@ const VideoCard = ({
               {title}
             </Typography>
           )}
+          <div className="dltBtn">
+          <DeleteIcon/>
+          </div>
           <div
             className={clsx({
-              [classes.subContent]: type === "horizontal_1",
+              [classes.subContent]: type === "horizontal_1"
             })}
           >
             {isLoading ? (
@@ -218,6 +223,7 @@ const VideoCard = ({
                     {channel}{" "}
                   </a>
                 </Typography>
+                
               </div>
             )}
             {isLoading ? (
