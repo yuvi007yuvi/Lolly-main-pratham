@@ -41,8 +41,8 @@ function App() {
           />
           <Route
             exact
-            path="/videopage"
-            render={(props) => <Video {...props} page="videopage" />}
+            path="/channel/:id"
+            render={(props) => <Channel {...props} />}
           />
           <Route
             exact

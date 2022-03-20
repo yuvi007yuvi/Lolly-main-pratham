@@ -143,8 +143,8 @@ const ChannelPage = ({ match }) => {
           onChange={handleTabChange}
           aria-label="tabs"
         >
-          <AntTab label="Home" disabled />
-          <AntTab label="Videos" />
+          
+          <AntTab style={{color:"white" , fontWeight:"500"}} label="Your Videos" />
         </AntTabs>
       </div>
       <div className={classes.subscriptionContent}>

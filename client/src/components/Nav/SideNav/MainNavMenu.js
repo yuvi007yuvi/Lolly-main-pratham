@@ -1,5 +1,5 @@
 import React from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch,useSelector } from "react-redux";
 
 import { List, useMediaQuery, useTheme } from "@material-ui/core";
 import { Home as HomeIcon, Whatshot as TrendingIcon } from "@material-ui/icons";
@@ -9,7 +9,7 @@ import { toggleDrawer } from "../../../redux/actions/layout";
 
 const MainNavMenu = () => {
   const theme = useTheme();
-
+  const id = useSelector(({ channel }) => channel.id);
   const isMinScreenMd = useMediaQuery(theme.breakpoints.up("md"));
   const dispatch = useDispatch();
   const handleItemClick = () => {
@@ -39,7 +39,7 @@ const MainNavMenu = () => {
         {
           title: "Your Videos",
           icon: faPlayCircle,
-          path: "/videopage",
+          path: `/channel/${id}`,
         },
         {
           title: "Settings",

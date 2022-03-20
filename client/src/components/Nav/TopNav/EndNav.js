@@ -180,7 +180,7 @@ const NavBar = () => {
         )}
         </Hidden>
 
-        {isAuth && <NavUserMenuBtn />}
+        {/* {isAuth && <NavUserMenuBtn />} */}
         {isAuth || isLogin && (
           <SignInBtn  size={theme.breakpoints.up("md") ? "medium" : "large"} />
         )}
@@ -196,7 +196,7 @@ const NavBar = () => {
             }}>{!window.ethereum ? 'Install Metamask': walletStatus}</p>
           </div>
         </Tooltip>
-        {!isAuth && <NavUserMenuBtn />}
+        {isAuth && <NavUserMenuBtn />}
       </>
     </Toolbar>
   );
