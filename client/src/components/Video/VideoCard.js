@@ -197,9 +197,7 @@ const VideoCard = ({
               {title}
             </Typography>
           )}
-          <div className="dltBtn">
-          <DeleteIcon/>
-          </div>
+          
           <div
             className={clsx({
               [classes.subContent]: type === "horizontal_1"

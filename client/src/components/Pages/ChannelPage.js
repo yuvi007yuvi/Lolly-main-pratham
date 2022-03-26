@@ -149,8 +149,8 @@ const ChannelPage = ({ match }) => {
       </div>
       <div className={classes.subscriptionContent}>
         {videos.length ? (
-          <VideoGrid type="vertical_1" videos={videos} />
-        ) : (
+          <VideoGrid type="vertical_1" videos={videos} isChannel={true}/>
+          ) : (
           "Nothing to Show"
         )}
       </div>

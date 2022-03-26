@@ -2,6 +2,7 @@ import React from "react";
 import { makeStyles, Grid } from "@material-ui/core";
 
 import VideoCard from "./VideoCard";
+import DeleteIcon from '@mui/icons-material/Delete';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -9,7 +10,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function VideoGrid({ isLoading, videos, type }) {
+export default function VideoGrid({ isLoading, videos, type ,isChannel }) {
   const classes = useStyles();
   return (
     <div className={classes.root}>
@@ -48,12 +49,13 @@ export default function VideoGrid({ isLoading, videos, type }) {
                     thumbnail={thumbnail}
                     duration={duration}
                   />
+                  {isChannel && <DeleteIcon style={{cursor:"pointer"}}/>}
                 </Grid>
               )
             )
           : new Array(8).fill(
               <Grid item xs={12} sm={6} md={4} lg={3}>
-                <VideoCard isLoading={isLoading} type={type} />{" "}
+                <VideoCard isLoading={isLoading} type={type}/>{" "}
               </Grid>
             )}
       </Grid>
